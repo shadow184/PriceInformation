@@ -3,7 +3,7 @@ import scrapy
 
 
 class DanMurphysBeerSpider(scrapy.Spider):
-    name = 'dan-murphys-beer'
+    name = 'dan-murphys'
 
     def start_requests(self):
         yield scrapy.Request('https://www.danmurphys.com.au/current-offers?filters=variety(beer)&size=120', self.parse, meta={
