@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
+from PriceInformation.items import PriceinformationItem
 
 
 class DanMurphysBeerSpider(scrapy.Spider):
@@ -14,10 +15,25 @@ class DanMurphysBeerSpider(scrapy.Spider):
         })
 
     def parse(self, response):
+        productList = []
+
         for p in response.css('.product-content'):
-            product = p.css('.title::text').extract_first()
-            yield {
-                    'product': product,
-                    'price': p.css('.value::text').extract(),
-                    'quantity': p.css('.quantity::text').extract()
-            }
+            product = PriceinformationItem()
+
+            pro = p.css('.title::text').extract_first()
+            
+            for pr in p.css('.value'):
+                product['name'] = pro
+                product['price'] = pr.css('.value::text').extract_first()
+            
+            for q in p.css('.quantity'):
+                product['quantity'] = q.css('.quantity::text').extract_first()
+
+            productList.append(product)
+            
+        #for product in productList:
+         #   yield product
+
+        d = {i : productList[i] for i in range(0, len(productList))}
+            
+        yield d
