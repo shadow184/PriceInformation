@@ -21,7 +21,14 @@ NEWSPIDER_MODULE = 'PriceInformation.spiders'
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
 
-SPLASH_URL = 'http://localhost:8050'
+ITEM_PIPELINES = {
+    'PriceInformation.pipelines.MongoPipeline': 300,
+}
+
+MONGO_URI = 'mongodb://192.168.0.189:27017'
+MONGO_DATABASE = 'PriceInformation'
+
+SPLASH_URL = 'http://192.168.0.192:8050'
 DOWNLOADER_MIDDLEWARES = {
     'scrapy_splash.SplashCookiesMiddleware': 723,
     'scrapy_splash.SplashMiddleware': 725,

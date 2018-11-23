@@ -30,10 +30,7 @@ class DanMurphysBeerSpider(scrapy.Spider):
                 product['quantity'] = q.css('.quantity::text').extract_first()
 
             productList.append(product)
-            
-        #for product in productList:
-         #   yield product
 
-        d = {i : productList[i] for i in range(0, len(productList))}
+        d = {str(i) : productList[i] for i in range(0, len(productList))}
             
         yield d
