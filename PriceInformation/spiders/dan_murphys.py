@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from PriceInformation.items import PriceinformationItem
+from datetime import datetime
 
 
 class DanMurphysBeerSpider(scrapy.Spider):
@@ -29,6 +30,8 @@ class DanMurphysBeerSpider(scrapy.Spider):
             for q in p.css('.quantity'):
                 product['quantity'] = q.css('.quantity::text').extract_first()
 
+            product['store'] = 'Dan Murphys'
+            product['date'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             productList.append(product)
 
         d = {str(i) : productList[i] for i in range(0, len(productList))}
