@@ -8,7 +8,15 @@ class DanMurphysBeerSpider(scrapy.Spider):
     name = 'dan-murphys'
 
     def start_requests(self):
-		urls = ['https://www.danmurphys.com.au/current-offers?filters=variety(beer)&size=120']
+		urls = [
+			'https://www.danmurphys.com.au/current-offers?filters=variety(beer)&size=120',
+			'https://www.danmurphys.com.au/current-offers?filters=variety(spirits)&size=120',
+			'https://www.danmurphys.com.au/current-offers?filters=variety(red-wine)&size=120',
+			'https://www.danmurphys.com.au/current-offers?filters=variety(white-wine)&size=120',
+			'https://www.danmurphys.com.au/current-offers?filters=variety(cider)&size=120',
+			'https://www.danmurphys.com.au/current-offers?filters=variety(whisky)&size=120'
+		]
+
 		for u in urls:
 			yield scrapy.Request(u, self.parse, meta={
 				'splash': {
