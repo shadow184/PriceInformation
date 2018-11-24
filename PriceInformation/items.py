@@ -6,3 +6,4 @@ class PriceinformationItem(scrapy.Item):
 	quantity = scrapy.Field()
 	store = scrapy.Field()
 	date = scrapy.Field()
+	itemType = scrapy.Field()
