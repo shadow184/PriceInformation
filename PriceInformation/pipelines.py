@@ -3,9 +3,12 @@ import MySQLdb
 from common import ItemContainsNull
 
 class MySqlPipeline(object):
-	def __init__(self):
+	def open_spider(self, spider):
 		self.conn = MySQLdb.connect('IP', 'USERNAME', 'PASSWORD', 'TABLENAME', charset="utf8", use_unicode=True)
 		self.cursor = self.conn.cursor()
+
+	def close_spider(self, spider):
+		self.conn.close();
 
 	def process_item(self, item, spider):
 		for i in item.iteritems():
