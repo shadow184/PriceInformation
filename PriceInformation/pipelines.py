@@ -1,34 +1,21 @@
 import logging
-import pymongo
+import MySQLdb
+from common import ItemContainsNull
 
-class MongoPipeline(object):
+class MySqlPipeline(object):
+	def __init__(self):
+		self.conn = MySQLdb.connect('IP', 'USERNAME', 'PASSWORD', 'TABLENAME', charset="utf8", use_unicode=True)
+		self.cursor = self.conn.cursor()
 
-    collection_name = 'price_information'
-
-    def __init__(self, mongo_uri, mongo_db):
-        self.mongo_uri = mongo_uri
-        self.mongo_db = mongo_db
-
-    @classmethod
-    def from_crawler(cls, crawler):
-        ## pull in information from settings.py
-        return cls(
-            mongo_uri=crawler.settings.get('MONGO_URI'),
-            mongo_db=crawler.settings.get('MONGO_DATABASE')
-        )
-
-    def open_spider(self, spider):
-        ## initializing spider
-        ## opening db connection
-        self.client = pymongo.MongoClient(self.mongo_uri)
-        self.db = self.client[self.mongo_db]
-
-    def close_spider(self, spider):
-        ## clean up when spider is closed
-        self.client.close()
-
-    def process_item(self, item, spider):
-        ## how to handle each post
-        self.db[self.collection_name].insert(dict(item))
-        logging.debug("Post added to MongoDB")
-        return item
+	def process_item(self, item, spider):
+		for i in item.iteritems():
+			if not ItemContainsNull(i):
+				self.cursor.execute("""INSERT INTO Product (Type, Price, Date, Quantity, Store, Name)  
+							VALUES (%s, %s, %s, %s, %s, %s)""", 
+						   (i[1]['itemType'], 
+							i[1]['price'],
+							i[1]['date'],
+							i[1]['quantity'],
+							i[1]['store'],
+							i[1]['name']))
+				self.conn.commit()

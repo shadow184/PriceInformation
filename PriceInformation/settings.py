@@ -22,7 +22,7 @@ NEWSPIDER_MODULE = 'PriceInformation.spiders'
 ROBOTSTXT_OBEY = True
 
 ITEM_PIPELINES = {
-    'PriceInformation.pipelines.MongoPipeline': 300,
+    'PriceInformation.pipelines.MySqlPipeline': 300,
 }
 
 MONGO_URI = 'mongodb://192.168.0.189:27017'
